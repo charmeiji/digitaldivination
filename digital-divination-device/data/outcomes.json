@@ -1,0 +1,42 @@
+{
+    "00000": { "photo": "./assets/photos/strip_00000.png", "talisman": "./assets/talismans/talisman_00000.png", "stickers": { "set": "set_neutral", "count": 12 } },
+    "00001": { "photo": "./assets/photos/strip_00001.png", "talisman": "./assets/talismans/talisman_00001.png", "stickers": { "set": "set_neutral", "count": 12 } },
+    "00010": { "photo": "./assets/photos/strip_00010.png", "talisman": "./assets/talismans/talisman_00010.png", "stickers": { "set": "set_neutral", "count": 12 } },
+    "00011": { "photo": "./assets/photos/strip_00011.png", "talisman": "./assets/talismans/talisman_00011.png", "stickers": { "set": "set_neutral", "count": 12 } },
+  
+    "00100": { "photo": "./assets/photos/strip_00100.png", "talisman": "./assets/talismans/talisman_00100.png", "stickers": { "set": "set_neutral", "count": 12 } },
+    "00101": { "photo": "./assets/photos/strip_00101.png", "talisman": "./assets/talismans/talisman_00101.png", "stickers": { "set": "set_neutral", "count": 12 } },
+    "00110": { "photo": "./assets/photos/strip_00110.png", "talisman": "./assets/talismans/talisman_00110.png", "stickers": { "set": "set_neutral", "count": 12 } },
+    "00111": { "photo": "./assets/photos/strip_00111.png", "talisman": "./assets/talismans/talisman_00111.png", "stickers": { "set": "set_neutral", "count": 12 } },
+  
+    "01000": { "photo": "./assets/photos/strip_01000.png", "talisman": "./assets/talismans/talisman_01000.png", "stickers": { "set": "set_cute", "count": 12 } },
+    "01001": { "photo": "./assets/photos/strip_01001.png", "talisman": "./assets/talismans/talisman_01001.png", "stickers": { "set": "set_cute", "count": 12 } },
+    "01010": { "photo": "./assets/photos/strip_01010.png", "talisman": "./assets/talismans/talisman_01010.png", "stickers": { "set": "set_cute", "count": 12 } },
+    "01011": { "photo": "./assets/photos/strip_01011.png", "talisman": "./assets/talismans/talisman_01011.png", "stickers": { "set": "set_cute", "count": 12 } },
+  
+    "01100": { "photo": "./assets/photos/strip_01100.png", "talisman": "./assets/talismans/talisman_01100.png", "stickers": { "set": "set_cute", "count": 12 } },
+    "01101": { "photo": "./assets/photos/strip_01101.png", "talisman": "./assets/talismans/talisman_01101.png", "stickers": { "set": "set_cute", "count": 12 } },
+    "01110": { "photo": "./assets/photos/strip_01110.png", "talisman": "./assets/talismans/talisman_01110.png", "stickers": { "set": "set_cute", "count": 12 } },
+    "01111": { "photo": "./assets/photos/strip_01111.png", "talisman": "./assets/talismans/talisman_01111.png", "stickers": { "set": "set_cute", "count": 12 } },
+  
+    "10000": { "photo": "./assets/photos/strip_10000.png", "talisman": "./assets/talismans/talisman_10000.png", "stickers": { "set": "set_cursed", "count": 12 } },
+    "10001": { "photo": "./assets/photos/strip_10001.png", "talisman": "./assets/talismans/talisman_10001.png", "stickers": { "set": "set_cursed", "count": 12 } },
+    "10010": { "photo": "./assets/photos/strip_10010.png", "talisman": "./assets/talismans/talisman_10010.png", "stickers": { "set": "set_cursed", "count": 12 } },
+    "10011": { "photo": "./assets/photos/strip_10011.png", "talisman": "./assets/talismans/talisman_10011.png", "stickers": { "set": "set_cursed", "count": 12 } },
+  
+    "10100": { "photo": "./assets/photos/strip_10100.png", "talisman": "./assets/talismans/talisman_10100.png", "stickers": { "set": "set_cursed", "count": 12 } },
+    "10101": { "photo": "./assets/photos/strip_10101.png", "talisman": "./assets/talismans/talisman_10101.png", "stickers": { "set": "set_cursed", "count": 12 } },
+    "10110": { "photo": "./assets/photos/strip_10110.png", "talisman": "./assets/talismans/talisman_10110.png", "stickers": { "set": "set_cursed", "count": 12 } },
+    "10111": { "photo": "./assets/photos/strip_10111.png", "talisman": "./assets/talismans/talisman_10111.png", "stickers": { "set": "set_cursed", "count": 12 } },
+  
+    "11000": { "photo": "./assets/photos/strip_11000.png", "talisman": "./assets/talismans/talisman_11000.png", "stickers": { "set": "set_neutral", "count": 12 } },
+    "11001": { "photo": "./assets/photos/strip_11001.png", "talisman": "./assets/talismans/talisman_11001.png", "stickers": { "set": "set_neutral", "count": 12 } },
+    "11010": { "photo": "./assets/photos/strip_11010.png", "talisman": "./assets/talismans/talisman_11010.png", "stickers": { "set": "set_neutral", "count": 12 } },
+    "11011": { "photo": "./assets/photos/strip_11011.png", "talisman": "./assets/talismans/talisman_11011.png", "stickers": { "set": "set_neutral", "count": 12 } },
+  
+    "11100": { "photo": "./assets/photos/strip_11100.png", "talisman": "./assets/talismans/talisman_11100.png", "stickers": { "set": "set_neutral", "count": 12 } },
+    "11101": { "photo": "./assets/photos/strip_11101.png", "talisman": "./assets/talismans/talisman_11101.png", "stickers": { "set": "set_neutral", "count": 12 } },
+    "11110": { "photo": "./assets/photos/strip_11110.png", "talisman": "./assets/talismans/talisman_11110.png", "stickers": { "set": "set_neutral", "count": 12 } },
+    "11111": { "photo": "./assets/photos/strip_11111.png", "talisman": "./assets/talismans/talisman_11111.png", "stickers": { "set": "set_neutral", "count": 12 } }
+  }
+  
