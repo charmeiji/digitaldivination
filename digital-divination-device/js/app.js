@@ -1,10 +1,12 @@
 import { STATES, transition, getState, isState } from "./state_machine.js";
 import { recordChoice, getBinaryString, reset, resolveOutcome } from "./rules.js";
-import { wait } from "./util.js";
+import { wait, seededRngFromString } from "./util.js";
 import { PACE } from "./pacing.js";
 import { validateAssets } from "./validate_assets.js";
 import { loadSession, saveSession, clearSession, newSessionId, isActiveRitualState } from "./session_store.js";
 import { getBitsArray, setBitsArray } from "./rules.js";
+import { CONFIG } from "./config.js";
+import { installCloseGuard } from "./close_guard.js";
 
 let currentSessionId = null;
 let startedAt = null;
@@ -44,19 +46,48 @@ function renderImageScreen(label, src) {
   `;
 }
 
-function renderStickerScreen(stickers) {
-  const stickerImgs = (stickers || [])
-    .filter(Boolean)
-    .slice(0, 12)
-    .map((src) => `<img src="${src}" style="width:72px; height:72px; object-fit:contain;" />`)
-    .join("");
+function renderStickerScreen(result) {
+  const stickers = (result.stickers || []).filter(Boolean).slice(0, 12);
+  const rng = seededRngFromString(result.code || "00000");
 
-  $("#app").innerHTML = `
-    <main style="padding:16px; font-family:monospace;">
-      <div style="margin-bottom:10px;">STICKER SHEET</div>
-      <div style="display:flex; flex-wrap:wrap; gap:8px;">
-        ${stickerImgs || `<div style="opacity:.7;">(none)</div>`}
+  const cells = [];
+  for (let i = 0; i < 12; i++) {
+    const src = stickers[i] || null;
+
+    // Deterministic "imperfection"
+    const rot = (rng() * 6 - 3).toFixed(2);      // -3°..+3°
+    const tx  = (rng() * 6 - 3).toFixed(2);      // -3px..+3px
+    const ty  = (rng() * 6 - 3).toFixed(2);
+
+    cells.push(`
+      <div class="sticker-cell">
+        ${
+          src
+            ? `<img class="sticker-img" src="${src}" alt="Sticker"
+                   style="transform: translate(${tx}px, ${ty}px) rotate(${rot}deg);" />`
+            : `<div style="opacity:.35; font-size:12px;">(empty)</div>`
+        }
       </div>
+    `);
+  }
+
+  const metaRight = (CONFIG?.SHOW_DEBUG_CODE ?? true)
+    ? `CODE ${result.code}`
+    : `SHEET`;
+
+  document.querySelector("#app").innerHTML = `
+    <main class="sheet">
+      <div class="crop tl"></div><div class="crop tr"></div>
+      <div class="crop bl"></div><div class="crop br"></div>
+
+      <div class="sheet-header">
+        <div class="sheet-title">STICKER SHEET</div>
+        <div class="sheet-meta">${metaRight}</div>
+      </div>
+
+      <section class="sticker-grid">
+        ${cells.join("")}
+      </section>
     </main>
   `;
 }
@@ -126,24 +157,26 @@ async function renderProcessingAndOutputs() {
   // PROCESSING (hold)
   transition(STATES.PROCESSING);
   persist();
-  renderTextScreen("PROCESSING…", `CODE: ${getBinaryString()}`);
+  const code = getBinaryString();
+  const codeDisplay = CONFIG.SHOW_DEBUG_CODE ? `CODE: ${code}` : "";
+  renderTextScreen("PROCESSING…", codeDisplay);
   await wait(PACE.PROCESSING_MS);
 
-  const result = await resolveOutcome(getBinaryString());
+  const result = await resolveOutcome(code);
 
-  // PHOTO STRIP (hold)
+  // PHOTO STRIP (hold) - transition before rendering
   transition(STATES.OUTPUT_PHOTO);
   persist();
   renderImageScreen("PHOTO STRIP (JUDGMENT)", result.photo);
   await wait(PACE.PHOTO_HOLD_MS);
 
-  // STICKERS (hold)
+  // STICKERS (hold) - transition before rendering
   transition(STATES.OUTPUT_STICKERS);
   persist();
-  renderStickerScreen(result.stickers);
+  renderStickerScreen(result);
   await wait(PACE.STICKERS_HOLD_MS);
 
-  // TALISMAN (hold)
+  // TALISMAN (hold) - transition before rendering
   transition(STATES.OUTPUT_TALISMAN);
   persist();
   renderImageScreen("TALISMAN (VERDICT)", result.talisman);
@@ -171,8 +204,49 @@ async function resumeFromState(state) {
   }
 
   if (state === STATES.OUTPUT_PHOTO || state === STATES.OUTPUT_STICKERS || state === STATES.OUTPUT_TALISMAN) {
-    // Resume by re-running outputs from the current point (simple and deterministic)
-    await renderProcessingAndOutputs();
+    // Resume by continuing outputs from current state (state already set, continue forward)
+    const result = await resolveOutcome(getBinaryString());
+    
+    if (state === STATES.OUTPUT_PHOTO) {
+      // Already in OUTPUT_PHOTO, show it and continue
+      renderImageScreen("PHOTO STRIP (JUDGMENT)", result.photo);
+      await wait(PACE.PHOTO_HOLD_MS);
+      
+      transition(STATES.OUTPUT_STICKERS);
+      persist();
+      renderStickerScreen(result);
+      await wait(PACE.STICKERS_HOLD_MS);
+      
+      transition(STATES.OUTPUT_TALISMAN);
+      persist();
+      renderImageScreen("TALISMAN (VERDICT)", result.talisman);
+      await wait(PACE.TALISMAN_HOLD_MS);
+      
+      transition(STATES.END_LOCK);
+      persist();
+      renderTextScreen("SESSION ENDED.", "Close the window.");
+    } else if (state === STATES.OUTPUT_STICKERS) {
+      // Already in OUTPUT_STICKERS, show it and continue
+      renderStickerScreen(result);
+      await wait(PACE.STICKERS_HOLD_MS);
+      
+      transition(STATES.OUTPUT_TALISMAN);
+      persist();
+      renderImageScreen("TALISMAN (VERDICT)", result.talisman);
+      await wait(PACE.TALISMAN_HOLD_MS);
+      
+      transition(STATES.END_LOCK);
+      persist();
+      renderTextScreen("SESSION ENDED.", "Close the window.");
+    } else if (state === STATES.OUTPUT_TALISMAN) {
+      // Already in OUTPUT_TALISMAN, show it and end
+      renderImageScreen("TALISMAN (VERDICT)", result.talisman);
+      await wait(PACE.TALISMAN_HOLD_MS);
+      
+      transition(STATES.END_LOCK);
+      persist();
+      renderTextScreen("SESSION ENDED.", "Close the window.");
+    }
     return;
   }
 
@@ -181,14 +255,30 @@ async function resumeFromState(state) {
     return;
   }
 
-  // fallback
-  transition(STATES.ROUND_1);
-  persist();
-  await renderRound(1);
+  // fallback - should not happen with guarded state machine, but handle gracefully
+  try {
+    transition(STATES.INTRO);
+    persist();
+    renderTextScreen("DIGITAL DIVINATION DEVICE", "Initializing…");
+    await wait(PACE.INTRO_HOLD_MS);
+    transition(STATES.ROUND_1);
+    persist();
+    await renderRound(1);
+  } catch (e) {
+    console.error("Resume fallback failed:", e);
+    // Last resort: try to start from ROUND_1 if possible
+    if (getState() === STATES.BOOT) {
+      transition(STATES.INTRO);
+      persist();
+    }
+  }
 }
 
 window.addEventListener("DOMContentLoaded", async () => {
   console.log("DDD MVP boot");
+
+  // Install close guard to warn during active rituals
+  installCloseGuard(getState);
 
   window.addEventListener("keydown", (e) => {
     if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "r") {
@@ -206,7 +296,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   const saved = loadSession();
 
   if (saved && isActiveRitualState(saved.state)) {
-    // RESUME
+    // RESUME - skip INTRO when resuming from persistence
     currentSessionId = saved.session_id;
     startedAt = saved.started_at;
     setBitsArray(saved.bits || []);
@@ -218,6 +308,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   }
 
   // START NEW (either no session, or last session ended)
+  // Always go through INTRO (no dev skip)
   currentSessionId = newSessionId();
   startedAt = Date.now();
 
