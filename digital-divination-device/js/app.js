@@ -8,6 +8,7 @@ import { CONFIG } from "./config.js";
 import { installCloseGuard } from "./close_guard.js";
 import { getStickersForBits } from "./logic/sticker_selector.js";
 import { renderPreRitual, mountPreRitualInput, unmountPreRitualInput } from "./pre_ritual.js";
+import { renderCameraPortrait } from "./views/camera_portrait_view.js";
 
 let currentSessionId = null;
 let startedAt = null;
@@ -416,15 +417,36 @@ async function resumeFromState(state) {
     return;
   }
 
-  if (state === STATES.ATTRACT) {
-    // Pre-ritual state: render and mount advance handlers
+  if (state === STATES.CAMERA_PORTRAIT) {
+    // Camera portrait state - render scene and perform capture
+    const cleanup = await renderCameraPortrait($("#app"), {
+      onDone: async () => {
+        // Cleanup camera before transitioning
+        if (cleanup) cleanup();
+        transition(STATES.ROUND_1);
+        persist();
+        await renderRound(1);
+      }
+    });
+    return;
+  }
+
+  if (state === STATES.ATTRACT || state === STATES.CONFIRM_1 || state === STATES.CONFIRM_2) {
+    // Pre-ritual states: render and mount advance handlers
     renderPreRitual($("#app"), state);
     mountPreRitualInput({
       state: state,
       onAdvance: async () => {
-        // Skip CONFIRM_1, CONFIRM_2, and CAMERA_PORTRAIT - go directly to ROUND_1
-        transition(STATES.ROUND_1);
+        if (state === STATES.ATTRACT) {
+          transition(STATES.CONFIRM_1);
+        } else if (state === STATES.CONFIRM_1) {
+          transition(STATES.CONFIRM_2);
+        } else if (state === STATES.CONFIRM_2) {
+          transition(STATES.CAMERA_PORTRAIT);
+        }
         persist();
+        
+        // Continue with next state (could be CAMERA_PORTRAIT or ROUND_1)
         await resumeFromState(getState());
       }
     });
@@ -491,10 +513,9 @@ async function resumeFromState(state) {
         mountPreRitualInput({
           state: STATES.ATTRACT,
           onAdvance: async () => {
-            // Skip CONFIRM_1, CONFIRM_2, and CAMERA_PORTRAIT - go directly to ROUND_1
-            transition(STATES.ROUND_1);
+            transition(STATES.CONFIRM_1);
             persist();
-            await resumeFromState(STATES.ROUND_1);
+            await resumeFromState(STATES.CONFIRM_1);
           }
         });
       }
@@ -571,10 +592,9 @@ window.addEventListener("DOMContentLoaded", async () => {
   mountPreRitualInput({
     state: STATES.ATTRACT,
     onAdvance: async () => {
-      // Skip CONFIRM_1, CONFIRM_2, and CAMERA_PORTRAIT - go directly to ROUND_1
-      transition(STATES.ROUND_1);
+      transition(STATES.CONFIRM_1);
       persist();
-      await resumeFromState(STATES.ROUND_1);
+      await resumeFromState(STATES.CONFIRM_1);
     }
   });
 });

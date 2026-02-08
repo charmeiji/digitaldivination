@@ -24,7 +24,7 @@ export const STATES = Object.freeze({
 // Linear state machine: enforced sequence
 const VALID_TRANSITIONS = Object.freeze({
   BOOT: [STATES.ATTRACT],
-  ATTRACT: [STATES.ROUND_1],
+  ATTRACT: [STATES.CONFIRM_1],
   CONFIRM_1: [STATES.CONFIRM_2],
   CONFIRM_2: [STATES.CAMERA_PORTRAIT],
   CAMERA_PORTRAIT: [STATES.ROUND_1],
