@@ -1,15 +1,56 @@
 {
-    "set_cute": [
-      "./assets/stickers/set_cute/s_cute_001.png",
-      "./assets/stickers/set_cute/s_cute_002.png"
-    ],
-    "set_cursed": [
-      "./assets/stickers/set_cursed/s_cursed_001.png",
-      "./assets/stickers/set_cursed/s_cursed_002.png"
-    ],
-    "set_neutral": [
-      "./assets/stickers/set_neutral/s_neutral_001.png",
-      "./assets/stickers/set_neutral/s_neutral_002.png"
-    ]
-  }
-  
+  "set_cute": [
+    "assets/stickers/set_cute/s_cute_001.png",
+    "assets/stickers/set_cute/s_cute_002.png",
+    "assets/stickers/set_cute/s_cute_003.png",
+    "assets/stickers/set_cute/s_cute_004.png",
+    "assets/stickers/set_cute/s_cute_005.png",
+    "assets/stickers/set_cute/s_cute_006.png",
+    "assets/stickers/set_cute/s_cute_007.png",
+    "assets/stickers/set_cute/s_cute_008.png",
+    "assets/stickers/set_cute/s_cute_009.png",
+    "assets/stickers/set_cute/s_cute_010.png",
+    "assets/stickers/set_cute/s_cute_011.png",
+    "assets/stickers/set_cute/s_cute_012.png",
+    "assets/stickers/set_cute/s_cute_013.png",
+    "assets/stickers/set_cute/s_cute_014.png",
+    "assets/stickers/set_cute/s_cute_015.png",
+    "assets/stickers/set_cute/s_cute_016.png"
+  ],
+  "set_cursed": [
+    "assets/stickers/set_cursed/s_cursed_001.png",
+    "assets/stickers/set_cursed/s_cursed_002.png",
+    "assets/stickers/set_cursed/s_cursed_003.png",
+    "assets/stickers/set_cursed/s_cursed_004.png",
+    "assets/stickers/set_cursed/s_cursed_005.png",
+    "assets/stickers/set_cursed/s_cursed_006.png",
+    "assets/stickers/set_cursed/s_cursed_007.png",
+    "assets/stickers/set_cursed/s_cursed_008.png",
+    "assets/stickers/set_cursed/s_cursed_009.png",
+    "assets/stickers/set_cursed/s_cursed_010.png",
+    "assets/stickers/set_cursed/s_cursed_011.png",
+    "assets/stickers/set_cursed/s_cursed_012.png",
+    "assets/stickers/set_cursed/s_cursed_013.png",
+    "assets/stickers/set_cursed/s_cursed_014.png",
+    "assets/stickers/set_cursed/s_cursed_015.png",
+    "assets/stickers/set_cursed/s_cursed_016.png"
+  ],
+  "set_neutral": [
+    "assets/stickers/set_neutral/s_neutral_001.png",
+    "assets/stickers/set_neutral/s_neutral_002.png",
+    "assets/stickers/set_neutral/s_neutral_003.png",
+    "assets/stickers/set_neutral/s_neutral_004.png",
+    "assets/stickers/set_neutral/s_neutral_005.png",
+    "assets/stickers/set_neutral/s_neutral_006.png",
+    "assets/stickers/set_neutral/s_neutral_007.png",
+    "assets/stickers/set_neutral/s_neutral_008.png",
+    "assets/stickers/set_neutral/s_neutral_009.png",
+    "assets/stickers/set_neutral/s_neutral_010.png",
+    "assets/stickers/set_neutral/s_neutral_011.png",
+    "assets/stickers/set_neutral/s_neutral_012.png",
+    "assets/stickers/set_neutral/s_neutral_013.png",
+    "assets/stickers/set_neutral/s_neutral_014.png",
+    "assets/stickers/set_neutral/s_neutral_015.png",
+    "assets/stickers/set_neutral/s_neutral_016.png"
+  ]
+}

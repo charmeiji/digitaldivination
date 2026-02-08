@@ -1,5 +1,12 @@
 export const STATES = Object.freeze({
   BOOT: "BOOT",
+  ATTRACT: "ATTRACT",
+  CONFIRM_1: "CONFIRM_1",
+  CONFIRM_2: "CONFIRM_2",
+
+  CAMERA_PORTRAIT: "CAMERA_PORTRAIT", // ← ADD
+
+  IDLE: "IDLE",
   INTRO: "INTRO",
   ROUND_1: "ROUND_1",
   ROUND_2: "ROUND_2",
@@ -13,9 +20,15 @@ export const STATES = Object.freeze({
   END_LOCK: "END_LOCK"
 });
 
+
 // Linear state machine: enforced sequence
 const VALID_TRANSITIONS = Object.freeze({
-  BOOT: [STATES.INTRO],
+  BOOT: [STATES.ATTRACT],
+  ATTRACT: [STATES.ROUND_1],
+  CONFIRM_1: [STATES.CONFIRM_2],
+  CONFIRM_2: [STATES.CAMERA_PORTRAIT],
+  CAMERA_PORTRAIT: [STATES.ROUND_1],
+  IDLE: [STATES.INTRO],
   INTRO: [STATES.ROUND_1],
   ROUND_1: [STATES.ROUND_2],
   ROUND_2: [STATES.ROUND_3],
@@ -36,6 +49,12 @@ export function getState() {
 }
 
 export function transition(next) {
+  // Defensive guard: BOOT must only transition to ATTRACT
+  if (currentState === STATES.BOOT && next !== STATES.ATTRACT) {
+    console.warn(`Illegal transition from BOOT to ${next}. Forcing ATTRACT.`);
+    next = STATES.ATTRACT;
+  }
+  
   const validNext = VALID_TRANSITIONS[currentState];
   
   if (!validNext || !validNext.includes(next)) {

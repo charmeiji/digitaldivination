@@ -1,1 +1,69 @@
-{}
+{
+  "rounds": [
+    {
+      "id": "r1",
+      "a": {
+        "id": "r1_a",
+        "img": "assets/choices/r1_a.png",
+        "tags": { "cute": 1 }
+      },
+      "b": {
+        "id": "r1_b",
+        "img": "assets/choices/r1_b.png",
+        "tags": { "neutral": 1 }
+      }
+    },
+    {
+      "id": "r2",
+      "a": {
+        "id": "r2_a",
+        "img": "assets/choices/r2_a.png",
+        "tags": { "cute": 1 }
+      },
+      "b": {
+        "id": "r2_b",
+        "img": "assets/choices/r2_b.png",
+        "tags": { "cursed": 1 }
+      }
+    },
+    {
+      "id": "r3",
+      "a": {
+        "id": "r3_a",
+        "img": "assets/choices/r3_a.png",
+        "tags": { "neutral": 1 }
+      },
+      "b": {
+        "id": "r3_b",
+        "img": "assets/choices/r3_b.png",
+        "tags": { "cursed": 1 }
+      }
+    },
+    {
+      "id": "r4",
+      "a": {
+        "id": "r4_a",
+        "img": "assets/choices/r4_a.png",
+        "tags": { "cute": 1 }
+      },
+      "b": {
+        "id": "r4_b",
+        "img": "assets/choices/r4_b.png",
+        "tags": { "neutral": 1 }
+      }
+    },
+    {
+      "id": "r5",
+      "a": {
+        "id": "r5_a",
+        "img": "assets/choices/r5_a.png",
+        "tags": { "cursed": 1 }
+      },
+      "b": {
+        "id": "r5_b",
+        "img": "assets/choices/r5_b.png",
+        "tags": { "neutral": 1 }
+      }
+    }
+  ]
+}

@@ -5,6 +5,19 @@ export function newSessionId() {
   return "ddd_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 8);
 }
 
+/**
+ * Session model:
+ * {
+ *   runId: string,
+ *   startedAt: ISO string,
+ *   choices: ["a"|"b", ... length 5],
+ *   bitstring: "01011",
+ *   tagTotals: { cute: number, neutral: number, cursed: number },
+ *   stickerSetId: "set_cute"|"set_neutral"|"set_cursed",
+ *   selectedStickerPaths: string[] (length 16)
+ * }
+ */
+
 export function loadSession() {
   try {
     const raw = localStorage.getItem(KEY);
@@ -17,8 +30,8 @@ export function loadSession() {
   }
 }
 
-export function saveSession(data) {
-  const payload = { schema: 1, ...data };
+export function saveSession(sessionData) {
+  const payload = { schema: 1, ...sessionData };
   localStorage.setItem(KEY, JSON.stringify(payload));
 }
 
@@ -31,5 +44,5 @@ export function sessionExists() {
 }
 
 export function isActiveRitualState(state) {
-  return state !== "END_LOCK" && state !== "BOOT";
+  return state !== "END_LOCK" && state !== "BOOT" && state !== "IDLE" && state !== "ATTRACT";
 }

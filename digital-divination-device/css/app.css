@@ -93,7 +93,113 @@
   .crop.tr { top: 6px; right: 6px; border-left: none; border-bottom: none; }
   .crop.bl { bottom: 6px; left: 6px; border-right: none; border-top: none; }
   .crop.br { bottom: 6px; right: 6px; border-left: none; border-top: none; }
-  
-    margin: 0;
-    padding: 0;
+
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Attract screen */
+.attract-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.attract-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.attract-title {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: clamp(24px, 5vw, 48px);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  margin-bottom: auto;
+  padding-top: 20vh;
+}
+
+.attract-status {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: clamp(12px, 2vw, 18px);
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  padding-bottom: 8vh;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Camera portrait scene */
+.scene {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+.scene-container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scene-container.zoomed {
+  transform: scale(2.5);
+  transform-origin: center center;
+  transition: transform 2s ease-in-out;
+}
+
+.character {
+  position: absolute;
+  z-index: 2;
+}
+
+.ball {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.ball-video,
+.ball-still {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  clip-path: circle(50%);
+  border-radius: 50%;
+}
+
+.face-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.dialogue {
+  position: absolute;
+  z-index: 3;
+}
+
+.flash {
+  position: fixed;
+  inset: 0;
+  background: #ffffff;
+  pointer-events: none;
+  z-index: 9999;
 }
