@@ -32,7 +32,7 @@ export async function renderCameraPortrait(rootEl, { onDone }) {
   // Create scene container
   const scene = document.createElement("div");
   scene.className = "scene-container";
-  scene.style.cssText = "position: fixed; inset: 0; background: #1a0a2e; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 1s ease-in;";
+  scene.style.cssText = "position: fixed; inset: 0; background: #1a0a2e; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 1.5s ease-in;";
   
   // Character image (placeholder)
   const character = document.createElement("div");
@@ -85,8 +85,8 @@ export async function renderCameraPortrait(rootEl, { onDone }) {
   // Dialogue line
   const dialogue = document.createElement("div");
   dialogue.className = "dialogue";
-  dialogue.style.cssText = "position: absolute; bottom: 20%; left: 50%; transform: translateX(-50%); color: #ffffff; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; font-size: 18px; text-align: center; opacity: 0; transition: opacity 0.5s ease-in; z-index: 3; background: rgba(0,0,0,0.6); padding: 12px 24px; border-radius: 8px;";
-  dialogue.textContent = "Look into the crystal.";
+  dialogue.style.cssText = "position: absolute; bottom: 20%; left: 50%; transform: translateX(-50%); color: #ffffff; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; font-size: 18px; text-align: center; opacity: 0; transition: opacity 0.8s ease-in; z-index: 3; background: rgba(0,0,0,0.6); padding: 12px 24px; border-radius: 8px;";
+  dialogue.textContent = "hello welcome…";
   
   // Flash overlay (hidden initially)
   const flash = document.createElement("div");
@@ -104,45 +104,54 @@ export async function renderCameraPortrait(rootEl, { onDone }) {
     scene.style.opacity = "1";
   }, 100);
   
-  // Step 2: Show dialogue after delay
+  // Step 2: Show first dialogue
   setTimeout(() => {
     dialogue.style.opacity = "1";
-    
-    // Step 3: Zoom into crystal ball after dialogue appears
+  }, 1800);
+  
+  // Step 3: Change to second dialogue
+  setTimeout(() => {
+    dialogue.style.opacity = "0";
     setTimeout(() => {
-      scene.classList.add("zoomed");
-      
-      // Step 4: Start camera and show feed inside ball
-      setTimeout(async () => {
-        try {
-          currentStream = await startCamera(video);
-          video.style.display = "block";
+      dialogue.textContent = "look into my crystal ball…";
+      dialogue.style.opacity = "1";
+    }, 600);
+  }, 4200);
+  
+  // Step 4: Zoom into crystal ball after full intro sequence
+  setTimeout(() => {
+    scene.classList.add("zoomed");
+    
+    // Step 5: Start camera and show feed inside ball
+    setTimeout(async () => {
+      try {
+        currentStream = await startCamera(video);
+        video.style.display = "block";
+        
+        // Step 6: Show face frame overlay
+        setTimeout(() => {
+          faceFrame.style.display = "block";
           
-          // Step 5: Show face frame overlay
+          // Enable capture after lockout delay (1.5s)
           setTimeout(() => {
-            faceFrame.style.display = "block";
+            captureLocked = false;
             
-            // Enable capture after lockout delay (1.5s)
+            // Auto-capture after a short delay
             setTimeout(() => {
-              captureLocked = false;
-              
-              // Auto-capture after a short delay
-              setTimeout(() => {
-                performCapture();
-              }, 500);
-            }, 1500);
-          }, 500);
-        } catch (error) {
-          console.error("Camera failed:", error);
-          // Continue even if camera fails - use placeholder
-          captureLocked = false;
-          setTimeout(() => {
-            performCapture();
-          }, 500);
-        }
-      }, 800);
-    }, 1000);
-  }, 1500);
+              performCapture();
+            }, 500);
+          }, 1500);
+        }, 500);
+      } catch (error) {
+        console.error("Camera failed:", error);
+        // Continue even if camera fails - use placeholder
+        captureLocked = false;
+        setTimeout(() => {
+          performCapture();
+        }, 500);
+      }
+    }, 800);
+  }, 6800);
   
   // Capture function
   const performCapture = async () => {

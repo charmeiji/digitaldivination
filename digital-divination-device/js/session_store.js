@@ -14,7 +14,9 @@ export function newSessionId() {
  *   bitstring: "01011",
  *   tagTotals: { cute: number, neutral: number, cursed: number },
  *   stickerSetId: "set_cute"|"set_neutral"|"set_cursed",
- *   selectedStickerPaths: string[] (length 16)
+ *   selectedStickerPaths: string[] (length 16),
+ *   portrait_data_url: string (PNG data URL),
+ *   player_name: string
  * }
  */
 
